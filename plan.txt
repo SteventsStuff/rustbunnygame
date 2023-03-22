@@ -1,0 +1,28 @@
++ add player sprite;
++ controlling via keyboard;
++ add food sprites;
++ add collision;
++ add player stats;
+
++ add enemies + collision;
+- add lives;
+- add game loop reset;
+- add pause;
+- add win message;
+
+
+- big code refact (Everything);
+
+- add basic UI;
+- add sound;
+
+- big code refact (Everything, optional);
+
+
+- add animations;
+- code-generated things (grass, etc);
+- obsticles;
+
+- big code refact (Everything);
+
+- re-draw Everything
