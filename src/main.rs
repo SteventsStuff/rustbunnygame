@@ -9,8 +9,9 @@ mod utils;
 
 use bevy::{
     app::App,
+    diagnostic::FrameTimeDiagnosticsPlugin,
     prelude::{IntoSystemAppConfigs, IntoSystemConfigs, OnEnter, OnUpdate},
-    DefaultPlugins, diagnostic::FrameTimeDiagnosticsPlugin,
+    DefaultPlugins,
 };
 use plugins as custome_plugins;
 use states::AppState;
@@ -18,7 +19,7 @@ use systems::{
     animate_sprite, basic_setup, check_enemy_collision_system, check_player_collision_system,
     confine_enemy_movement_system, confine_player_movement_system, draw_background_system,
     enemy_movement_system, player_movement_system, spawn_enemy, spawn_food_system,
-    spawn_player_system, text_setup, text_update_system
+    spawn_player_system, text_setup, text_update_system,
 };
 
 fn main() {
@@ -48,7 +49,7 @@ fn main() {
                 check_player_collision_system,
                 check_enemy_collision_system,
                 animate_sprite,
-                text_update_system
+                text_update_system,
             )
                 .in_set(OnUpdate(AppState::Finished)),
         )

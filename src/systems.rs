@@ -1,22 +1,22 @@
 use bevy::{
+    diagnostic::{Diagnostics, FrameTimeDiagnosticsPlugin},
     ecs::system::Commands,
     prelude::{
         default, info, AssetServer, Assets, Camera2dBundle, Color, Entity, Handle, Image, Input,
         KeyCode, ParamSet, Query, Res, ResMut, TextBundle, Transform, Vec2, Vec3, With, Without,
     },
     sprite::{collide_aabb::collide, Sprite, SpriteBundle, TextureAtlas, TextureAtlasSprite},
-    text::{TextAlignment, TextSection, TextStyle, Text},
+    text::{Text, TextSection, TextStyle},
     time::{Time, Timer, TimerMode},
-    ui::{PositionType, Style, UiRect, Val},
-    window::{PrimaryWindow, Window}, diagnostic::{Diagnostics, FrameTimeDiagnosticsPlugin},
+    window::{PrimaryWindow, Window},
 };
 use rand::{self, Rng};
 
 use crate::{
     bundles::{EnemyEntity, FoodEntity, PlayerEntity},
     componetns::{
-        AnimationIndices, AnimationTimer, Collider, ColorText, Direction, EnemyType, FoodType,
-        FpsText, PlayerType,
+        AnimationIndices, AnimationTimer, Collider, Direction, EnemyType, FoodType, FpsText,
+        PlayerType,
     },
     consts, resources, utils,
 };
@@ -337,7 +337,10 @@ pub fn text_setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     ));
 }
 
-pub fn text_update_system(diagnostics: Res<Diagnostics>, mut query: Query<&mut Text, With<FpsText>>) {
+pub fn text_update_system(
+    diagnostics: Res<Diagnostics>,
+    mut query: Query<&mut Text, With<FpsText>>,
+) {
     for mut text in &mut query {
         if let Some(fps) = diagnostics.get(FrameTimeDiagnosticsPlugin::FPS) {
             if let Some(value) = fps.smoothed() {
