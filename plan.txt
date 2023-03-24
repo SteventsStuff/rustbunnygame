@@ -3,13 +3,13 @@
 + add food sprites;
 + add collision;
 + add player stats;
-
 + add enemies + collision;
-- add lives;
++ big code refact (move to plugins);
+
+- add player lives and death via events;
 - add game loop reset;
 - add pause;
 - add win message;
-
 
 - big code refact (Everything);
 
@@ -18,8 +18,7 @@
 
 - big code refact (Everything, optional);
 
-
-- add animations;
+- add more animations;
 - code-generated things (grass, etc);
 - obsticles;
 
