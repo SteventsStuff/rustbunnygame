@@ -1,14 +1,20 @@
+//! This example illustrates the various features of Bevy UI.
+
 use bevy::{
     diagnostic::{Diagnostics, FrameTimeDiagnosticsPlugin},
-    prelude::{AssetServer, Commands, Query, Res, With},
-    text::Text,
+    prelude::*,
 };
 
-use super::{components::FpsText, entities::FpsTextEntity};
+use super::{
+    components::FpsText,
+    entities::{FpsTextEntity, UiBox},
+};
 
-pub fn fps_screen_message_setup(mut commands: Commands, asset_server: Res<AssetServer>) {
+pub fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     let font_handle = asset_server.load("fonts/FiraMono-Medium.ttf");
-    commands.spawn(FpsTextEntity::new(&font_handle));
+    commands.spawn(UiBox::new()).with_children(|parent| {
+        parent.spawn(FpsTextEntity::new(&font_handle));
+    });
 }
 
 pub fn fps_value_update_system(

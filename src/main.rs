@@ -1,12 +1,9 @@
 mod plugins;
 
-use bevy::{app::App, DefaultPlugins};
+use bevy::app::App;
 
 use crate::plugins::game::game_plugin::GamePlugin;
 
 fn main() {
-    App::new()
-        .add_plugins(DefaultPlugins)
-        .add_plugin(GamePlugin)
-        .run();
+    App::new().add_plugin(GamePlugin).run();
 }

@@ -7,7 +7,7 @@ use crate::plugins::components::Collider;
 
 use super::{
     components::{AnimationIndices, AnimationTimer, Direction, EnemyType},
-    constants::{ENEMY_SIZE, ENEMY_LAYER_Z_INDEX},
+    constants::{ENEMY_LAYER_Z_INDEX, ENEMY_SIZE},
 };
 
 #[derive(Bundle)]
@@ -39,7 +39,11 @@ impl EnemyEntity {
 
             _sprite: SpriteSheetBundle {
                 transform: Transform {
-                    translation: Vec3::new(direction.x + 150.0, direction.y + 150.0, ENEMY_LAYER_Z_INDEX),
+                    translation: Vec3::new(
+                        direction.x + 150.0,
+                        direction.y + 150.0,
+                        ENEMY_LAYER_Z_INDEX,
+                    ),
                     ..default()
                 },
                 texture_atlas: texture_atlas_handle,

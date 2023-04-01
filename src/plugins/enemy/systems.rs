@@ -17,7 +17,8 @@ use crate::plugins::{
         utils,
     },
     food::components::FoodType,
-    player::components::PlayerType, resources,
+    player::components::PlayerType,
+    resources,
 };
 
 use super::{
