@@ -1,7 +1,8 @@
 use bevy::prelude::Component;
 
 #[derive(Component)]
-pub struct Health(u8);
+pub struct PlayerType;
+
 
 #[derive(Component)]
-pub struct PlayerType;
+pub struct NoDamageFrames(pub bool);

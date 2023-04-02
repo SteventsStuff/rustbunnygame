@@ -10,7 +10,7 @@ use bevy::{
 };
 
 use crate::plugins::{
-    components::Collider,
+    components::{Collider, PlayerHealth},
     enemy::{
         components::{AnimationIndices, AnimationTimer},
         entities::EnemyEntity,
@@ -128,8 +128,9 @@ pub fn check_enemy_collision_system(
     mut commands: Commands,
     mut set: ParamSet<(
         Query<(&mut Transform, &TextureAtlasSprite), With<EnemyType>>,
-        Query<(Entity, &mut Transform, &Sprite), (With<Collider>, With<PlayerType>)>,
-        Query<(Entity, &mut Transform, &Sprite), (With<Collider>, With<FoodType>)>,
+        Query<(Entity, &mut Transform, &mut Sprite), (With<Collider>, With<PlayerType>)>,
+        Query<(Entity, &Transform, &Sprite), (With<Collider>, With<FoodType>)>,
+        Query<&mut PlayerHealth>,
     )>,
     mut game_score: ResMut<resources::FoodStats>,
 ) {
@@ -145,11 +146,18 @@ pub fn check_enemy_collision_system(
         let (player_entity, player_transform, player_sprite) = player;
         let player_pos = player_transform.translation;
         let player_size = player_sprite.custom_size.unwrap();
+        
+        let mut player_health_q = set.p3();
+        let mut player_health = player_health_q.get_single_mut().unwrap();
 
         let collison = collide(enemy_pos, enemy_size, player_pos, player_size);
         if let Some(_collison) = collison {
-            commands.entity(player_entity).despawn();
-            info!("Player was killed");
+            player_health.0 -= 1;
+            info!("Player health: {}", player_health.0);
+            if player_health.0 <= 0 {
+                commands.entity(player_entity).despawn();
+                info!("Player was killed");
+            }
         }
     }
 
@@ -157,10 +165,8 @@ pub fn check_enemy_collision_system(
         let food_pos = food_transform.translation;
         let food_size = foot_sprite.custom_size.unwrap();
 
-        // println!("food pos: {}", food_pos);
         let collision = collide(enemy_pos, enemy_size, food_pos, food_size);
         if let Some(_collision) = collision {
-            // print!("collided!!!!");
             commands.entity(food_entity).despawn();
             game_score.enemy_ate_count += 1;
             info!("Food score: {:?}", game_score);
