@@ -146,7 +146,7 @@ pub fn check_enemy_collision_system(
         let (player_entity, player_transform, player_sprite) = player;
         let player_pos = player_transform.translation;
         let player_size = player_sprite.custom_size.unwrap();
-        
+
         let mut player_health_q = set.p3();
         let mut player_health = player_health_q.get_single_mut().unwrap();
 

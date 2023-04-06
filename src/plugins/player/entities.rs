@@ -6,8 +6,8 @@ use bevy::{
 use crate::plugins::components::{Collider, PlayerHealth};
 
 use super::{
-    components::{PlayerType, NoDamageFrames},
-    constants::{PLAYER_LAYER_Z_INDEX, PLAYER_SIZE, PLAYER_MAX_HEALTH},
+    components::{NoDamageFrames, PlayerType},
+    constants::{PLAYER_LAYER_Z_INDEX, PLAYER_MAX_HEALTH, PLAYER_SIZE},
 };
 
 #[derive(Bundle)]

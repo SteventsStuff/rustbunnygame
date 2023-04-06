@@ -1,14 +1,14 @@
 use super::{
-    components::{FpsText, ScoreText, HealthValue},
+    components::{FpsText, HealthValue, ScoreText},
     constants::{FPS_FONT_SIZE, FPS_STYLE, SCORE_FONT_SIZE, UI_BOX_BG_COLOR, UI_BOX_STYLE},
 };
 use bevy::{
     prelude::{
         default, AssetServer, Bundle, Color, Component, Handle, ImageBundle, NodeBundle, Res,
-        TextBundle, AddAsset,
+        TextBundle,
     },
     text::{Font, TextSection, TextStyle},
-    ui::{Size, Style, UiImage, Val, ZIndex, UiRect},
+    ui::{Size, Style, UiImage, UiRect, Val, ZIndex},
 };
 
 #[derive(Component)]
@@ -56,7 +56,6 @@ impl ScoreBoxEntity {
             ..default()
         };
 
-        
         Self {
             icon: image,
             text: ScoreTextEntity {
@@ -126,17 +125,16 @@ impl FpsTextEntity {
     }
 }
 
-
 #[derive(Component)]
 pub struct HealthHUD {
     tag: HealthValue,
-    pub health_value: Vec<ImageBundle>
+    pub health_value: Vec<ImageBundle>,
 }
 
 impl HealthHUD {
     pub fn new(max_health: i8, asset_server: &Res<AssetServer>) -> Self {
         let mut health_vec: Vec<ImageBundle> = Vec::new();
-        
+
         for _ in 1..=max_health {
             let heart_icon = ImageBundle {
                 style: Style {

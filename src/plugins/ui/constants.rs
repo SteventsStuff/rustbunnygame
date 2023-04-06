@@ -25,5 +25,35 @@ pub const FPS_STYLE: Style = Style {
     ..Style::DEFAULT
 };
 
-// score
+// HUD general
+pub const HUD_ELEMENT_MARGIN: UiRect = UiRect {
+    top: Val::Px(5.0),
+    right: Val::Px(5.0),
+    ..UiRect::DEFAULT
+};
+
+// HUD health
+pub const HEALTH_STYLE: Style = Style {
+    size: Size {
+        height: Val::Px(30.0),
+        ..Size::DEFAULT
+    },
+    margin: HUD_ELEMENT_MARGIN,
+    position: UiRect {
+        right: Val::Px(0.0),
+        ..UiRect::DEFAULT
+    },
+    position_type: PositionType::Absolute,
+    ..Style::DEFAULT
+};
+
+// HUD score
 pub const SCORE_FONT_SIZE: f32 = 20.0;
+pub const SCORE_STYLE: Style = Style {
+    size: Size {
+        height: Val::Px(20.0),
+        ..Size::DEFAULT
+    },
+    margin: HUD_ELEMENT_MARGIN,
+    ..Style::DEFAULT
+};

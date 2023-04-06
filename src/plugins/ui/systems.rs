@@ -1,5 +1,3 @@
-//! This example illustrates the various features of Bevy UI.
-
 use bevy::{
     diagnostic::{Diagnostics, FrameTimeDiagnosticsPlugin},
     prelude::*,
@@ -9,66 +7,48 @@ use crate::plugins::resources;
 
 use super::{
     components::{FpsText, ScoreText},
-    constants::UI_BOX_BG_COLOR,
-    entities::{FpsTextEntity, ScoreBoxEntity, UiBox, HealthHUD},
+    constants::{HEALTH_STYLE, SCORE_STYLE, UI_BOX_BG_COLOR},
+    entities::{FpsTextEntity, HealthHUD, ScoreBoxEntity, UiBox},
 };
 
-pub fn setup_hub(mut commands: Commands, asset_server: Res<AssetServer>) {
+pub fn setup_hud(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn(UiBox::new()).with_children(|parent| {
         // score
-        parent
-            .spawn(NodeBundle {
-                style: Style {
-                    size: Size {
-                        height: Val::Px(20.0),
-                        ..default()
-                    },
-                    margin: UiRect {
-                        top: Val::Px(5.0),
-                        left: Val::Px(5.0),
-                        ..default()
-                    },
-                    ..default()
-                },
-                background_color: UI_BOX_BG_COLOR.into(),
-                ..default()
-            })
-            .with_children(|parent| {
-                let score_entity = ScoreBoxEntity::new(&asset_server);
-                // icon
-                parent.spawn(score_entity.icon);
-                // value
-                parent.spawn(score_entity.text);
-            });
-        
+        add_score_hud_element(parent, &asset_server);
         // health
-        parent.spawn(NodeBundle {
-            style: Style {
-                size: Size {
-                    height: Val::Px(30.0),
-                    ..default()
-                },
-                margin: UiRect {
-                    top: Val::Px(5.0),
-                    right: Val::Px(5.0),
-                    ..default()
-                },
-                position: UiRect {
-                    right: Val::Px(0.0),
-                    ..default() 
-                },
-                position_type: PositionType::Absolute,
-                ..default()
-            },
+        add_health_hud_element(parent, &asset_server);
+    });
+}
+
+fn add_score_hud_element(parent: &mut ChildBuilder, asset_server: &Res<AssetServer>) {
+    parent
+        .spawn(NodeBundle {
+            style: SCORE_STYLE,
             background_color: UI_BOX_BG_COLOR.into(),
             ..default()
-        }).with_children(|parent| {
+        })
+        .with_children(|parent| {
+            let score_entity = ScoreBoxEntity::new(&asset_server);
+            // icon
+            parent.spawn(score_entity.icon);
+            // value
+            parent.spawn(score_entity.text);
+        });
+}
+
+fn add_health_hud_element(parent: &mut ChildBuilder, asset_server: &Res<AssetServer>) {
+    parent
+        .spawn(NodeBundle {
+            style: HEALTH_STYLE,
+            background_color: UI_BOX_BG_COLOR.into(),
+            ..default()
+        })
+        .with_children(|parent| {
             let health_hud = HealthHUD::new(3, &asset_server);
-            for heart in health_hud.health_value{
+            for heart in health_hud.health_value {
                 parent.spawn(heart);
             }
         });
-    });
 }
 
 pub fn update_ui_score_value(

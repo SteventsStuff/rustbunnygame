@@ -6,7 +6,7 @@ use bevy::{
 
 use crate::plugins::states::GameState;
 
-use super::systems::{fps_value_update_system, setup_fps, setup_hub, update_ui_score_value};
+use super::systems::{fps_value_update_system, setup_fps, setup_hud, update_ui_score_value};
 
 // NOTE: this idea about all UI in one plugin group is prob a dogshit, but for this peject it is fine, tho (or not lol)
 pub struct UiPlugins;
@@ -24,7 +24,7 @@ struct HUDPlugin;
 
 impl Plugin for HUDPlugin {
     fn build(&self, app: &mut App) {
-        app.add_system(setup_hub.in_schedule(OnEnter(GameState::InGame)))
+        app.add_system(setup_hud.in_schedule(OnEnter(GameState::InGame)))
             .add_system(update_ui_score_value.in_set(OnUpdate(GameState::InGame)));
     }
 }
