@@ -1,8 +1,10 @@
 use bevy::{
-    prelude::{AssetServer, Commands, Handle, Image, Query, Res, Vec3, With},
+    prelude::{info, AssetServer, Commands, EventReader, Handle, Image, Query, Res, Vec3, With},
     window::{PrimaryWindow, Window},
 };
 use rand::Rng;
+
+use crate::plugins::events::SpawnNewFoodEvent;
 
 use super::{
     constants::{FOOD_LAYER_Z_INDEX, FOOD_SIZE, FOOD_SPAWN_AMOUNT},
@@ -14,6 +16,26 @@ pub fn spawn_food_system(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
     window_query: Query<&Window, With<PrimaryWindow>>,
+) {
+    place_food(&mut commands, &asset_server, &window_query);
+}
+
+pub fn add_new_food(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    window_query: Query<&Window, With<PrimaryWindow>>,
+    mut ev_spawn_food: EventReader<SpawnNewFoodEvent>,
+) {
+    for _ in ev_spawn_food.iter() {
+        info!("spawning food by event!");
+        place_food(&mut commands, &asset_server, &window_query);
+    }
+}
+
+fn place_food(
+    commands: &mut Commands,
+    asset_server: &Res<AssetServer>,
+    window_query: &Query<&Window, With<PrimaryWindow>>,
 ) {
     let window = window_query.get_single().unwrap();
     let mut rnd = rand::thread_rng();

@@ -2,6 +2,7 @@ use bevy::prelude::{App, Plugin};
 
 use crate::plugins::core::core_plugins::CorePlugin;
 use crate::plugins::enemy::enemy_plugins::EnemyPlugin;
+use crate::plugins::events::SpawnNewFoodEvent;
 use crate::plugins::food::food_plugins::FoodPlugin;
 use crate::plugins::levels::level_plugins::LevelPluginGroup;
 use crate::plugins::player::player_plugin::PlayerPlugin;
@@ -13,6 +14,8 @@ pub struct GamePlugin;
 impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app.add_state::<GameState>();
+
+        app.add_event::<SpawnNewFoodEvent>();
 
         app.add_plugins(LevelPluginGroup).add_plugins(UiPlugins);
 

@@ -1,14 +1,19 @@
 use bevy::{
     prelude::{
-        info, AssetServer, Commands, Entity, Handle, Image, Input, KeyCode, Query, Res, ResMut,
-        Transform, Vec3, With, Without,
+        info, AssetServer, Commands, Entity, EventWriter, Handle, Image, Input, KeyCode, Query,
+        Res, ResMut, Transform, Vec3, With, Without,
     },
     sprite::{collide_aabb::collide, Sprite},
     time::Time,
     window::{PrimaryWindow, Window},
 };
 
-use crate::plugins::{components::Collider, food::components::FoodType, resources};
+use crate::plugins::{
+    components::Collider,
+    events::SpawnNewFoodEvent,
+    food::{components::FoodType, constants::FOOD_SPAWN_AMOUNT},
+    resources,
+};
 
 use super::{
     components::PlayerType,
@@ -89,6 +94,7 @@ pub fn confine_player_movement_system(
 // todo: resources such as score and end game also msut be done via events (later)
 pub fn check_player_collision_system(
     mut commands: Commands,
+    mut ev_sapwn_food: EventWriter<SpawnNewFoodEvent>,
     player_query: Query<(&mut Transform, &Sprite), With<PlayerType>>,
     food_query: Query<
         (Entity, &mut Transform, &Sprite),
@@ -109,6 +115,10 @@ pub fn check_player_collision_system(
                 commands.entity(food_entity).despawn();
                 game_score.player_ate_count += 1;
                 info!("Food score: {:?}", game_score);
+                let total_score: usize = game_score.enemy_ate_count + game_score.player_ate_count;
+                if total_score as u8 % FOOD_SPAWN_AMOUNT == 0 {
+                    ev_sapwn_food.send(SpawnNewFoodEvent);
+                }
             }
         }
     }

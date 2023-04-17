@@ -1,6 +1,7 @@
 pub mod components;
 mod core;
 mod enemy;
+pub mod events;
 mod food;
 pub mod game;
 mod levels;

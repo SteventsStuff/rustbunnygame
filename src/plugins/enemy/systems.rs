@@ -2,7 +2,7 @@ use bevy::{
     ecs::system::Commands,
     prelude::{
         info, AssetServer, Assets, Entity, Handle, Image, ParamSet, Query, Res, ResMut, Transform,
-        Vec2, Vec3, With,
+        Vec2, Vec3, With, EventWriter,
     },
     sprite::{collide_aabb::collide, Sprite, TextureAtlas, TextureAtlasSprite},
     time::{Time, Timer, TimerMode},
@@ -16,9 +16,9 @@ use crate::plugins::{
         entities::EnemyEntity,
         utils,
     },
-    food::components::FoodType,
+    food::{components::FoodType, constants::FOOD_SPAWN_AMOUNT},
     player::components::PlayerType,
-    resources,
+    resources, events::SpawnNewFoodEvent,
 };
 
 use super::{
@@ -126,6 +126,7 @@ pub fn confine_enemy_movement_system(
 
 pub fn check_enemy_collision_system(
     mut commands: Commands,
+    mut ev_sapwn_food: EventWriter<SpawnNewFoodEvent>,
     mut set: ParamSet<(
         Query<(&mut Transform, &TextureAtlasSprite), With<EnemyType>>,
         Query<(Entity, &mut Transform, &mut Sprite), (With<Collider>, With<PlayerType>)>,
@@ -162,6 +163,10 @@ pub fn check_enemy_collision_system(
             commands.entity(food_entity).despawn();
             game_score.enemy_ate_count += 1;
             info!("Food score: {:?}", game_score);
+            let total_score: usize = game_score.enemy_ate_count + game_score.player_ate_count;
+            if total_score as u8 % FOOD_SPAWN_AMOUNT == 0 {
+                ev_sapwn_food.send(SpawnNewFoodEvent);
+            }
         }
     }
 }
