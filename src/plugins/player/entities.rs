@@ -3,20 +3,19 @@ use bevy::{
     sprite::{Sprite, SpriteBundle},
 };
 
-use crate::plugins::components::{Collider, PlayerHealth};
+use crate::plugins::components::Collider;
 
 use super::{
     components::{NoDamageFrames, PlayerType},
-    constants::{PLAYER_LAYER_Z_INDEX, PLAYER_MAX_HEALTH, PLAYER_SIZE},
+    constants::{PLAYER_LAYER_Z_INDEX, PLAYER_SIZE},
 };
 
 #[derive(Bundle)]
 pub struct PlayerEntity {
     entity_type: PlayerType,
     collider: Collider,
-    health: PlayerHealth,
-    player_no_damage_frames: NoDamageFrames,
-
+    no_damage_frames: NoDamageFrames,
+    // no_damage_frames: NoDamageFrames,
     #[bundle]
     _sprite: SpriteBundle,
 }
@@ -28,8 +27,7 @@ impl PlayerEntity {
         Self {
             entity_type: PlayerType,
             collider: Collider,
-            health: PlayerHealth(PLAYER_MAX_HEALTH),
-            player_no_damage_frames: NoDamageFrames(false),
+            no_damage_frames: NoDamageFrames::default(),
 
             _sprite: SpriteBundle {
                 transform: Transform {
@@ -45,4 +43,5 @@ impl PlayerEntity {
             },
         }
     }
+
 }

@@ -10,7 +10,7 @@ use bevy::{
 };
 
 use crate::plugins::{
-    components::{Collider, PlayerHealth},
+    components::Collider,
     enemy::{
         components::{AnimationIndices, AnimationTimer},
         entities::EnemyEntity,
@@ -130,7 +130,6 @@ pub fn check_enemy_collision_system(
         Query<(&mut Transform, &TextureAtlasSprite), With<EnemyType>>,
         Query<(Entity, &mut Transform, &mut Sprite), (With<Collider>, With<PlayerType>)>,
         Query<(Entity, &Transform, &Sprite), (With<Collider>, With<FoodType>)>,
-        Query<&mut PlayerHealth>,
     )>,
     mut game_score: ResMut<resources::FoodStats>,
 ) {
@@ -147,17 +146,10 @@ pub fn check_enemy_collision_system(
         let player_pos = player_transform.translation;
         let player_size = player_sprite.custom_size.unwrap();
 
-        let mut player_health_q = set.p3();
-        let mut player_health = player_health_q.get_single_mut().unwrap();
-
         let collison = collide(enemy_pos, enemy_size, player_pos, player_size);
         if let Some(_collison) = collison {
-            player_health.0 -= 1;
-            info!("Player health: {}", player_health.0);
-            if player_health.0 <= 0 {
-                commands.entity(player_entity).despawn();
-                info!("Player was killed");
-            }
+            commands.entity(player_entity).despawn();
+            info!("Player was killed");
         }
     }
 

@@ -7,8 +7,8 @@ use crate::plugins::resources;
 
 use super::{
     components::{FpsText, ScoreText},
-    constants::{HEALTH_STYLE, SCORE_STYLE, UI_BOX_BG_COLOR},
-    entities::{FpsTextEntity, HealthHUD, ScoreBoxEntity, UiBox},
+    constants::{SCORE_STYLE, UI_BOX_BG_COLOR},
+    entities::{FpsTextEntity, ScoreBoxEntity, UiBox},
 };
 
 pub fn setup_hud(mut commands: Commands, asset_server: Res<AssetServer>) {
@@ -16,7 +16,7 @@ pub fn setup_hud(mut commands: Commands, asset_server: Res<AssetServer>) {
         // score
         add_score_hud_element(parent, &asset_server);
         // health
-        add_health_hud_element(parent, &asset_server);
+        // add_health_hud_element(parent, &asset_server);
     });
 }
 
@@ -36,20 +36,19 @@ fn add_score_hud_element(parent: &mut ChildBuilder, asset_server: &Res<AssetServ
         });
 }
 
-fn add_health_hud_element(parent: &mut ChildBuilder, asset_server: &Res<AssetServer>) {
-    parent
-        .spawn(NodeBundle {
-            style: HEALTH_STYLE,
-            background_color: UI_BOX_BG_COLOR.into(),
-            ..default()
-        })
-        .with_children(|parent| {
-            let health_hud = HealthHUD::new(3, &asset_server);
-            for heart in health_hud.health_value {
-                parent.spawn(heart);
-            }
-        });
-}
+// fn add_health_hud_element(parent: &mut ChildBuilder, asset_server: &Res<AssetServer>) {
+//     parent
+//         .spawn(NodeBundle {
+//             background_color: UI_BOX_BG_COLOR.into(),
+//             ..default()
+//         })
+//         .with_children(|parent| {
+//             let health_hud = HealthHUD::new(3, &asset_server);
+//             for heart in health_hud.health_value {
+//                 parent.spawn(heart);
+//             }
+//         });
+// }
 
 pub fn update_ui_score_value(
     game_score: ResMut<resources::FoodStats>,

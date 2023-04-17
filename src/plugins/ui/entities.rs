@@ -1,6 +1,6 @@
 use super::{
-    components::{FpsText, HealthValue, ScoreText},
-    constants::{FPS_FONT_SIZE, FPS_STYLE, SCORE_FONT_SIZE, UI_BOX_BG_COLOR, UI_BOX_STYLE},
+    components::{FpsText, ScoreText},
+    constants::{FPS_FONT_SIZE, FPS_STYLE, SCORE_FONT_SIZE, UI_BOX_STYLE},
 };
 use bevy::{
     prelude::{
@@ -127,35 +127,33 @@ impl FpsTextEntity {
 
 #[derive(Component)]
 pub struct HealthHUD {
-    tag: HealthValue,
     pub health_value: Vec<ImageBundle>,
 }
 
-impl HealthHUD {
-    pub fn new(max_health: i8, asset_server: &Res<AssetServer>) -> Self {
-        let mut health_vec: Vec<ImageBundle> = Vec::new();
+// impl HealthHUD {
+//     pub fn new(max_health: i8, asset_server: &Res<AssetServer>) -> Self {
+//         let mut health_vec: Vec<ImageBundle> = Vec::new();
 
-        for _ in 1..=max_health {
-            let heart_icon = ImageBundle {
-                style: Style {
-                    size: Size {
-                        width: Val::Px(30.0),
-                        height: Val::Px(30.0),
-                    },
-                    ..default()
-                },
-                image: UiImage {
-                    texture: asset_server.load("images/ui/heart.png"),
-                    ..default()
-                },
-                ..default()
-            };
-            health_vec.push(heart_icon);
-        }
+//         for _ in 1..=max_health {
+//             let heart_icon = ImageBundle {
+//                 style: Style {
+//                     size: Size {
+//                         width: Val::Px(30.0),
+//                         height: Val::Px(30.0),
+//                     },
+//                     ..default()
+//                 },
+//                 image: UiImage {
+//                     texture: asset_server.load("images/ui/heart.png"),
+//                     ..default()
+//                 },
+//                 ..default()
+//             };
+//             health_vec.push(heart_icon);
+//         }
 
-        HealthHUD {
-            tag: HealthValue,
-            health_value: health_vec,
-        }
-    }
-}
+//         HealthHUD {
+//             health_value: health_vec,
+//         }
+//     }
+// }
